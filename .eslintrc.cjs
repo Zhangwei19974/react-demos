@@ -32,6 +32,7 @@ module.exports = {
         "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1 }],
         'react/jsx-max-props-per-line': [1, {"maximum": 5}],
         'key-spacing': ["error", { "afterColon": true }],
-        'comma-spacing': ["error", { "before": false, "after": true }]
+        'comma-spacing': ["error", { "before": false, "after": true }],
+        "react/self-closing-comp": ["error"]
     }
 };
