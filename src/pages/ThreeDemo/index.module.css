@@ -1,0 +1,7 @@
+.colorRed{
+    color: red;
+}
+.buttons{
+    display: flex;
+    gap: 10px;
+}

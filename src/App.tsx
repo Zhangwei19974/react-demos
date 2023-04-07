@@ -1,19 +1,19 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import {Route, Routes} from 'react-router-dom';
+import {Route, Routes, useNavigate} from 'react-router-dom';
 import Home from './pages/Home';
-import About from './pages/About';
+import ThreeDemo from './pages/ThreeDemo';
+import main from '@/styles/main.module.css'
 
 function App() {
   const [count, setCount] = useState(0)
-
+  const router = useNavigate()
   return (
-    <div>
-      <div>主页</div>
+    <div className={main.fullScreen}>
       <Routes>
         <Route path={'/'} element={<Home />} />
-        <Route path={'/about'} element={<About />} />
+        <Route path={'/threeDemo'} element={<ThreeDemo />} />
       </Routes>
     </div>
   )
