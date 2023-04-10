@@ -8,13 +8,15 @@ import {
   BoxGeometry, BufferGeometry, Camera, Line, LineBasicMaterial,
   Material,
   Mesh,
-  MeshBasicMaterial, MeshPhongMaterial, Object3D,
-  PerspectiveCamera, Renderer,
+  MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial, Object3D,
+  PerspectiveCamera, PointLight, Renderer,
   Scene, Vector3,
   WebGLRenderer
 } from 'three';
 import {MaterialParameters} from 'three/src/materials/Material';
 import {TextGeometry} from 'three/examples/jsm/geometries/TextGeometry';
+import TWEEN from '@tweenjs/tween.js';
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 
 function Index() {
   // const isWebGl = isSupportWebgl()
@@ -56,6 +58,7 @@ function Index() {
         // if(callBackFun){
         //   callBackFun()
         // }
+        TWEEN.update()
         animationList.forEach(e=>e!())
         renderer.render(scene, camera)
       }
@@ -166,12 +169,43 @@ function Index() {
   }
 
   function changeCameraPosition(){
-
-    cameraInfo.position.set(getRendom(1000), getRendom(1000), getRendom(1000))
-    cameraInfo.lookAt(0, 0, 0)
+    console.log(cameraInfo.position)
+    const tween = new TWEEN.Tween(cameraInfo.position)
+    tween.to(new Vector3(getRendom(1000), getRendom(1000), getRendom(1000)), 1000)
+    tween.onUpdate(()=>{
+      cameraInfo.lookAt(0, 0, 0)
+    })
+    tween.start()
+    // cameraInfo.position.set(getRendom(1000), getRendom(1000), getRendom(1000))
   }
   function getRendom(length:number){
     return  Math.floor(Math.random()*length)
+  }
+  // 创建有光源的场景
+  function createLightObject(){
+    const box = new BoxGeometry(100, 100, 100)
+    const material1 = new MeshBasicMaterial({
+      color: '#770000'
+    })
+    const material2 = new MeshLambertMaterial({
+      color: '#770000'
+    })
+    const mesh1 = new Mesh(box, material1)
+    mesh1.position.set(0, 0, 0)
+    const mesh2 = new Mesh(box, material2)
+    mesh2.position.set(200, 200, 200)
+    const pointLight = new PointLight('#fff', 1.0)
+    pointLight.position.set(400, 0, 0)
+    sceneInfo.add(mesh1)
+    sceneInfo.add(mesh2)
+    sceneInfo.add(pointLight)
+  }
+  function createOrbitControls(){
+    const control = new OrbitControls(cameraInfo, rendererInfo.domElement)
+    control.addEventListener('change', function (){
+      console.log('Asdasd')
+      rendererInfo.render(sceneInfo, cameraInfo)
+    })
   }
   return (
     <ContainerFlex>
@@ -185,6 +219,8 @@ function Index() {
         <Button onClick={()=>initLine()}>绘制线段</Button>
         <Button onClick={()=>initText()}>创建文字</Button>
         <Button onClick={()=>changeCameraPosition()}>切换camera位置</Button>
+        <Button onClick={()=>createLightObject()}>创建有光源的场景</Button>
+        <Button onClick={()=>createOrbitControls()}>创建相机组件</Button>
       </div>
     </ContainerFlex>
   );
