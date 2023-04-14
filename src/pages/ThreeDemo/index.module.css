@@ -3,5 +3,7 @@
 }
 .buttons{
     display: flex;
+    width: 800px;
     gap: 10px;
+    flex-wrap: wrap;
 }
